@@ -1,81 +1,14 @@
 {
   "students": [
-    {
-      "id": 1,
-      "name": "Jerry",
-      "age": 20,
-      "major": "Computer Science",
-      "email": "jerry@example.com"
-    },
-    {
-      "id": 2,
-      "name": "Tom",
-      "age": 18,
-      "major": "Electrical Engineering",
-      "email": "tom@example.com"
-    },
-    {
-      "id": 3,
-      "name": "John",
-      "age": 19,
-      "major": "Design",
-      "email": "john@example.com"
-    },
-    {
-      "id": 4,
-      "name": "Lisa",
-      "age": 22,
-      "major": "Business",
-      "email": "lisa@example.com"
-    },
-    {
-      "id": 5,
-      "name": "Anna",
-      "age": 21,
-      "major": "Education",
-      "email": "anna@example.com"
-    },
-    {
-      "id": 6,
-      "name": "Steve",
-      "age": 23,
-      "major": "Physics",
-      "email": "steve@example.com"
-    },
-    {
-      "id": 7,
-      "name": "Grace",
-      "age": 24,
-      "major": "Mathematics",
-      "email": "grace@example.com"
-    },
-    {
-      "id": 8,
-      "name": "David",
-      "age": 25,
-      "major": "Robotics",
-      "email": "david@example.com"
-    },
-    {
-      "id": 9,
-      "name": "Emma",
-      "age": 20,
-      "major": "Law",
-      "email": "emma@example.com"
-    },
-    {
-      "id": 10,
-      "name": "Ryan",
-      "age": 22,
-      "major": "AI Engineering",
-      "email": "ryan@example.com"
-    },
-    {
-      "id": 11,
-      "name": "이어진",
-      "age": "23",
-      "major": "CS",
-      "email": "2002eo56@naver.com"
-    }
+    { "id": 1, "name": "Jerry", "age": 20, "major": "Computer Science", "email": "jerry@example.com" },
+    { "id": 2, "name": "Tom", "age": 18, "major": "Electrical Engineering", "email": "tom@example.com" },
+    { "id": 3, "name": "John", "age": 19, "major": "Design", "email": "john@example.com" },
+    { "id": 4, "name": "Lisa", "age": 22, "major": "Business", "email": "lisa@example.com" },
+    { "id": 5, "name": "Anna", "age": 21, "major": "Education", "email": "anna@example.com" },
+    { "id": 6, "name": "Steve", "age": 23, "major": "Physics", "email": "steve@example.com" },
+    { "id": 7, "name": "Grace", "age": 24, "major": "Mathematics", "email": "grace@example.com" },
+    { "id": 8, "name": "David", "age": 25, "major": "Robotics", "email": "david@example.com" },
+    { "id": 9, "name": "Emma", "age": 20, "major": "Law", "email": "emma@example.com" },
+    { "id": 10, "name": "Ryan", "age": 22, "major": "AI Engineering", "email": "ryan@example.com" }
   ]
 }
