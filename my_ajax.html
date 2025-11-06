@@ -56,54 +56,53 @@
         };
       }
 
-    function postData() {
-  let name = document.getElementById("name");
-  let age = document.getElementById("age");
-  let major = document.getElementById("major");
-  let email = document.getElementById("email");
+      function postData() {
+        let name = document.getElementById("name");
+        let age = document.getElementById("age");
+        let major = document.getElementById("major");
+        let email = document.getElementById("email");
 
-  // first: load current data to find the last id
-  const xhrGet = new XMLHttpRequest();
-  xhrGet.open("GET", baseURL);
-  xhrGet.setRequestHeader("content-type", "application/json");
-  xhrGet.send();
+        const xhrGet = new XMLHttpRequest();
+        xhrGet.open("GET", baseURL);
+        xhrGet.setRequestHeader("content-type", "application/json");
+        xhrGet.send();
 
-  xhrGet.onload = () => {
-    if (xhrGet.status === 200) {
-      const currentData = JSON.parse(xhrGet.response);
-      let newId = 1;
-      if (currentData.length > 0) {
-        newId = currentData[currentData.length - 1].id + 1;
+        xhrGet.onload = () => {
+          if (xhrGet.status === 200) {
+            const currentData = JSON.parse(xhrGet.response);
+            let newId = 1;
+            if (currentData.length > 0) {
+              // convert last id to number before adding 1
+              newId = Number(currentData[currentData.length - 1].id) + 1;
+            }
+
+            const newStudent = {
+              id: newId,
+              name: name.value,
+              age: age.value,
+              major: major.value,
+              email: email.value
+            };
+
+            const xhrPost = new XMLHttpRequest();
+            xhrPost.open("POST", baseURL);
+            xhrPost.setRequestHeader("content-type", "application/json; charset=UTF-8");
+            xhrPost.send(JSON.stringify(newStudent));
+
+            xhrPost.onload = () => {
+              if (xhrPost.status === 201) {
+                name.value = "";
+                age.value = "";
+                major.value = "";
+                email.value = "";
+                getStudents();
+              } else {
+                console.log(xhrPost.status, xhrPost.statusText);
+              }
+            };
+          }
+        };
       }
-
-      const newStudent = {
-        id: newId,
-        name: name.value,
-        age: age.value,
-        major: major.value,
-        email: email.value
-      };
-
-      const xhrPost = new XMLHttpRequest();
-      xhrPost.open("POST", baseURL);
-      xhrPost.setRequestHeader("content-type", "application/json; charset=UTF-8");
-      xhrPost.send(JSON.stringify(newStudent));
-
-      xhrPost.onload = () => {
-        if (xhrPost.status === 201) {
-          name.value = "";
-          age.value = "";
-          major.value = "";
-          email.value = "";
-          getStudents();
-        } else {
-          console.log(xhrPost.status, xhrPost.statusText);
-        }
-      };
-    }
-  };
-}
-
 
       function updateData(id) {
         const newName = prompt("Enter new name:");
