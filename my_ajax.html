@@ -38,8 +38,7 @@
         btnAdd.addEventListener("click", postData);
       };
 
-const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
-
+      const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
 
       function getStudents() {
         let contents = document.getElementById("contents");
@@ -63,44 +62,27 @@ const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
         let major = document.getElementById("major");
         let email = document.getElementById("email");
 
-        const xhrGet = new XMLHttpRequest();
-        xhrGet.open("GET", baseURL);
-        xhrGet.setRequestHeader("content-type", "application/json");
-        xhrGet.send();
+        const newStudent = {
+          name: name.value,
+          age: age.value,
+          major: major.value,
+          email: email.value
+        };
 
-        xhrGet.onload = () => {
-          if (xhrGet.status === 200) {
-            const currentData = JSON.parse(xhrGet.response);
-            let newId = 1;
-            if (currentData.length > 0) {
-              // convert last id to number before adding 1
-              newId = Number(currentData[currentData.length - 1].id) + 1;
-            }
+        const xhrPost = new XMLHttpRequest();
+        xhrPost.open("POST", baseURL);
+        xhrPost.setRequestHeader("content-type", "application/json; charset=UTF-8");
+        xhrPost.send(JSON.stringify(newStudent));
 
-            const newStudent = {
-              id: newId,
-              name: name.value,
-              age: age.value,
-              major: major.value,
-              email: email.value
-            };
-
-            const xhrPost = new XMLHttpRequest();
-            xhrPost.open("POST", baseURL);
-            xhrPost.setRequestHeader("content-type", "application/json; charset=UTF-8");
-            xhrPost.send(JSON.stringify(newStudent));
-
-            xhrPost.onload = () => {
-              if (xhrPost.status === 201) {
-                name.value = "";
-                age.value = "";
-                major.value = "";
-                email.value = "";
-                getStudents();
-              } else {
-                console.log(xhrPost.status, xhrPost.statusText);
-              }
-            };
+        xhrPost.onload = () => {
+          if (xhrPost.status === 201) {
+            name.value = "";
+            age.value = "";
+            major.value = "";
+            email.value = "";
+            getStudents();
+          } else {
+            console.log(xhrPost.status, xhrPost.statusText);
           }
         };
       }
@@ -112,7 +94,7 @@ const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
         const newEmail = prompt("Enter new email:");
         if (!newName || !newAge || !newMajor || !newEmail) return;
         const xhr = new XMLHttpRequest();
-        xhr.open("PUT", `${baseURL}/${id}`);
+        xhr.open("PUT", `${baseURL}/${id}`); // id는 문자열 그대로 사용
         xhr.setRequestHeader("content-type", "application/json; charset=UTF-8");
         const data = {
           name: newName,
@@ -133,7 +115,7 @@ const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
       function deleteData(id) {
         if (!confirm("Are you sure you want to delete this item?")) return;
         const xhr = new XMLHttpRequest();
-        xhr.open("DELETE", `${baseURL}/${id}`);
+        xhr.open("DELETE", `${baseURL}/${id}`); // id 문자열
         xhr.send();
         xhr.onload = () => {
           if (xhr.status === 200) {
@@ -155,8 +137,8 @@ const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
                     <td>${data[key].major}</td>
                     <td>${data[key].email}</td>
                     <td>
-                      <button onclick="updateData(${data[key].id})">Edit</button>
-                      <button onclick="deleteData(${data[key].id})">Delete</button>
+                      <button onclick="updateData('${data[key].id}')">Edit</button>
+                      <button onclick="deleteData('${data[key].id}')">Delete</button>
                     </td>
                   </tr>`;
         }
@@ -178,5 +160,3 @@ const baseURL = "https://690cad36a6d92d83e84ee1c6.mockapi.io/students";
     <div id="contents"></div>
   </body>
 </html>
-
-
