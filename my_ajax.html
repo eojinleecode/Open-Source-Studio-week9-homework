@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my_ajax.html</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .content {
+        width: 80%;
+        float: left;
+      }
+      div {
+        padding: 10px;
+      }
+      button {
+        margin: 3px;
+      }
+      #contents {
+        width: 90%;
+        height: 450px;
+        background-color: lightgoldenrodyellow;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      input {
+        margin-right: 5px;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        let btnStu = document.getElementById("btnStu");
+        let btnAdd = document.getElementById("btnAdd");
+        btnStu.addEventListener("click", getStudents);
+        btnAdd.addEventListener("click", postData);
+      };
+
+      const baseURL = "http://localhost:3001/students";
+
+      function getStudents() {
+        let contents = document.getElementById("contents");
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", baseURL);
+        xhr.setRequestHeader("content-type", "application/json");
+        xhr.send();
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const res = JSON.parse(xhr.response);
+            contents.innerHTML = makeList(res);
+          } else {
+            console.log(xhr.status, xhr.statusText);
+          }
+        };
+      }
+
+    function postData() {
+  let name = document.getElementById("name");
+  let age = document.getElementById("age");
+  let major = document.getElementById("major");
+  let email = document.getElementById("email");
+
+  // first: load current data to find the last id
+  const xhrGet = new XMLHttpRequest();
+  xhrGet.open("GET", baseURL);
+  xhrGet.setRequestHeader("content-type", "application/json");
+  xhrGet.send();
+
+  xhrGet.onload = () => {
+    if (xhrGet.status === 200) {
+      const currentData = JSON.parse(xhrGet.response);
+      let newId = 1;
+      if (currentData.length > 0) {
+        newId = currentData[currentData.length - 1].id + 1;
+      }
+
+      const newStudent = {
+        id: newId,
+        name: name.value,
+        age: age.value,
+        major: major.value,
+        email: email.value
+      };
+
+      const xhrPost = new XMLHttpRequest();
+      xhrPost.open("POST", baseURL);
+      xhrPost.setRequestHeader("content-type", "application/json; charset=UTF-8");
+      xhrPost.send(JSON.stringify(newStudent));
+
+      xhrPost.onload = () => {
+        if (xhrPost.status === 201) {
+          name.value = "";
+          age.value = "";
+          major.value = "";
+          email.value = "";
+          getStudents();
+        } else {
+          console.log(xhrPost.status, xhrPost.statusText);
+        }
+      };
+    }
+  };
+}
+
+
+      function updateData(id) {
+        const newName = prompt("Enter new name:");
+        const newAge = prompt("Enter new age:");
+        const newMajor = prompt("Enter new major:");
+        const newEmail = prompt("Enter new email:");
+        if (!newName || !newAge || !newMajor || !newEmail) return;
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", `${baseURL}/${id}`);
+        xhr.setRequestHeader("content-type", "application/json; charset=UTF-8");
+        const data = {
+          name: newName,
+          age: newAge,
+          major: newMajor,
+          email: newEmail
+        };
+        xhr.send(JSON.stringify(data));
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            getStudents();
+          } else {
+            console.log(xhr.status, xhr.statusText);
+          }
+        };
+      }
+
+      function deleteData(id) {
+        if (!confirm("Are you sure you want to delete this item?")) return;
+        const xhr = new XMLHttpRequest();
+        xhr.open("DELETE", `${baseURL}/${id}`);
+        xhr.send();
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            getStudents();
+          } else {
+            console.log(xhr.status, xhr.statusText);
+          }
+        };
+      }
+
+      function makeList(data) {
+        let str = "<table border='1' width='100%' cellspacing='0' cellpadding='6'>";
+        str += "<tr><th>ID</th><th>Name</th><th>Age</th><th>Major</th><th>Email</th><th>Actions</th></tr>";
+        for (let key in data) {
+          str += `<tr>
+                    <td>${data[key].id}</td>
+                    <td>${data[key].name}</td>
+                    <td>${data[key].age}</td>
+                    <td>${data[key].major}</td>
+                    <td>${data[key].email}</td>
+                    <td>
+                      <button onclick="updateData(${data[key].id})">Edit</button>
+                      <button onclick="deleteData(${data[key].id})">Delete</button>
+                    </td>
+                  </tr>`;
+        }
+        str += "</table>";
+        return str;
+      }
+    </script>
+  </head>
+
+  <body>
+    <button id="btnStu">Load Student Data</button>
+    <div>
+      <input type="text" id="name" size="10" placeholder="name" />
+      <input type="number" id="age" size="5" placeholder="age" />
+      <input type="text" id="major" size="12" placeholder="major" />
+      <input type="text" id="email" size="18" placeholder="email" />
+      <button id="btnAdd" type="button">Add Student</button>
+    </div>
+    <div id="contents"></div>
+  </body>
+</html>
