@@ -69,6 +69,20 @@
       "age": 22,
       "major": "AI Engineering",
       "email": "ryan@example.com"
+    },
+    {
+      "id": 11,
+      "name": "이어진",
+      "age": "23",
+      "major": "CS",
+      "email": "2002eo56@naver.com"
+    },
+    {
+      "id": 12,
+      "name": "홍길동 ",
+      "age": "24",
+      "major": "math",
+      "email": "2qowem@naber.com"
     }
   ]
 }
